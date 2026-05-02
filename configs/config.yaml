@@ -1,19 +1,47 @@
 data:
-  raw_video_dir: "data/raw"
-  keypoints_dir: "data/keypoints"
-  splits_dir: "data/splits"
-  wlasl_json: "data/WLASL_v0.3.json" # oficial WLASL json
-  num_classes: 100 # WLASL100
-  max_frames: 64                        
+  # Raw OpenPose keypoint JSONs from How2Sign
+  keypoints_dir:
+    train: "data/keypoints/train_2D_keypoints/openpose_output/json"
+    val:   "data/keypoints/val_2D_keypoints/openpose_output/json"
+    test:  "data/keypoints/test_2D_keypoints/openpose_output/json"
 
-keypoints:
-  use_hands: true
-  use_pose: true
-  use_face: false                       
-  min_detection_confidence: 0.5
-  min_tracking_confidence: 0.5
+  # Realigned translation CSVs
+  translations_dir:
+    train: "data/translations/how2sign_realigned_train.csv"
+    val:   "data/translations/how2sign_realigned_val.csv"
+    test:  "data/translations/how2sign_realigned_test.csv"
 
-# Final dimentions:
-# Pose: 33 keypoints x 4 (x, y, z, visibility)
-# Left hand: 21 x 3, Right hand: 21 x 3
-# Total by frame: 33*4 + 21*3 + 21*3 = 132 + 63 + 63 = 258 features
+  # Processed .npy sequences output directory
+  processed_dir: "data/processed"
+
+  # Subset filter: only keep sentences with <= this many words
+  max_sentence_words: 10
+
+  # Sequence length: pad/truncate all clips to this many frames
+  max_frames: 150
+
+  # Keypoint feature size: OpenPose body(75) + face(210) + hands(126) = 411
+  feature_dim: 411
+
+model:
+  # Encoder
+  input_dim: 411
+  encoder_hidden_dim: 256
+  encoder_layers: 2
+  encoder_dropout: 0.1
+
+  # Decoder
+  decoder_hidden_dim: 256
+  decoder_layers: 2
+  decoder_dropout: 0.1
+
+  # Shared
+  max_output_length: 30
+
+training:
+  batch_size: 32
+  learning_rate: 0.0001
+  epochs: 50
+  teacher_forcing_ratio: 0.5
+  clip_grad_norm: 1.0
+  seed: 42

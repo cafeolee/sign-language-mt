@@ -1,10 +1,10 @@
 # for this project
-# Dataset
-data/
-*.csv
+# Dataset - raw keypoints 
+data/keypoints/
+data/processed/
 
-# WLASL repo cloned locally
-_wlasl_repo/
+# Translations CSVs
+!data/translations/
 
 ####
 
