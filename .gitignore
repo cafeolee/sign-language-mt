@@ -1,8 +1,7 @@
 # for this project
-# Dataset and generated files
-data/raw/
-data/keypoints/
-data/splits/
+# Dataset
+data/
+*.csv
 
 # WLASL repo cloned locally
 _wlasl_repo/
