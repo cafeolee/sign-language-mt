@@ -43,3 +43,25 @@ class Encoder(nn.Module):
         x = self.projection(x)
         x = self.pos_encoding(x)
         return self.transformer(x)
+
+class Decoder(nn.Module):
+    """Generates output tokens autoregressively using the encoder output as context."""
+
+    def __init__(self, hidden_dim: int, num_layers: int, dropout: float, vocab_size: int = 30522, nhead: int = 8):
+        super().__init__()
+        self.embedding = nn.Embedding(vocab_size, hidden_dim, padding_idx=0)
+        self.pos_encoding = PositionalEncoding(hidden_dim, dropout=dropout)
+        decoder_layer = nn.TransformerDecoderLayer(
+            d_model=hidden_dim,
+            nhead=nhead,
+            dropout=dropout,
+            batch_first=True
+        )
+        self.transformer = nn.TransformerDecoder(decoder_layer, num_layers=num_layers)
+        self.output_projection = nn.Linear(hidden_dim, vocab_size)
+
+    def forward(self, tgt: torch.Tensor, memory: torch.Tensor, tgt_mask: torch.Tensor = None, tgt_key_padding_mask: torch.Tensor = None) -> torch.Tensor:
+        x = self.embedding(tgt)
+        x = self.pos_encoding(x)
+        x = self.transformer(x, memory, tgt_mask=tgt_mask, tgt_key_padding_mask=tgt_key_padding_mask)
+        return self.output_projection(x)
