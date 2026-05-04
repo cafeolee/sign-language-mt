@@ -44,6 +44,7 @@ class Encoder(nn.Module):
         x = self.pos_encoding(x)
         return self.transformer(x)
 
+
 class Decoder(nn.Module):
     """Generates output tokens autoregressively using the encoder output as context."""
 
@@ -65,3 +66,32 @@ class Decoder(nn.Module):
         x = self.pos_encoding(x)
         x = self.transformer(x, memory, tgt_mask=tgt_mask, tgt_key_padding_mask=tgt_key_padding_mask)
         return self.output_projection(x)
+ 
+    
+class SignLanguageTransformer(nn.Module):
+    """Full seq2seq model that encodes keypoint sequences and decodes them into text tokens."""
+
+    def __init__(self, config: dict):
+        super().__init__()
+        m = config['model']
+        self.encoder = Encoder(
+            input_dim=m['input_dim'],
+            hidden_dim=m['encoder_hidden_dim'],
+            num_layers=m['encoder_layers'],
+            dropout=m['encoder_dropout'],
+        )
+        self.decoder = Decoder(
+            hidden_dim=m['decoder_hidden_dim'],
+            num_layers=m['decoder_layers'],
+            dropout=m['decoder_dropout'],
+        )
+
+    def make_causal_mask(self, size: int) -> torch.Tensor:
+        """Generates a causal mask to prevent the decoder from attending to future tokens."""
+        mask = torch.triu(torch.ones(size, size), diagonal=1).bool()
+        return mask
+
+    def forward(self, src: torch.Tensor, tgt: torch.Tensor, tgt_key_padding_mask: torch.Tensor = None) -> torch.Tensor:
+        memory = self.encoder(src)
+        tgt_mask = self.make_causal_mask(tgt.size(1)).to(src.device)
+        return self.decoder(tgt, memory, tgt_mask=tgt_mask, tgt_key_padding_mask=tgt_key_padding_mask)    
