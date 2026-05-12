@@ -1,0 +1,86 @@
+{
+  "bleu": 2.4068092504006415,
+  "wer": 1.210846707249585,
+  "examples": [
+    {
+      "reference": "hi!",
+      "prediction": "hi!"
+    },
+    {
+      "reference": "the rudder is the vertical stabilizer.",
+      "prediction": "i ' m going to talk about the board."
+    },
+    {
+      "reference": "this is what it will look like.",
+      "prediction": "so, i ' m going to talk about the top, mr."
+    },
+    {
+      "reference": "that ' s a good pike position.",
+      "prediction": "so, i ' m going to do this one."
+    },
+    {
+      "reference": "i hope you ' re having fun.",
+      "prediction": "i ' m going to do this."
+    },
+    {
+      "reference": "i ' m having fun.",
+      "prediction": "so, i ' m going to do it."
+    },
+    {
+      "reference": "let me show you what good pike position is.",
+      "prediction": "so, i ' m going to talk about the board."
+    },
+    {
+      "reference": "okay, thank you.",
+      "prediction": "good."
+    },
+    {
+      "reference": "you don ' t have to take big steps.",
+      "prediction": "so, i ' m going to do it."
+    },
+    {
+      "reference": "try not to pick up your feet, okay?",
+      "prediction": "so, i ' m going to do this one."
+    },
+    {
+      "reference": "we ' re going to actually slide.",
+      "prediction": "so, i ' m going to do it."
+    },
+    {
+      "reference": "a company with which i have no affiliation.",
+      "prediction": "so, i ' m going to do this one."
+    },
+    {
+      "reference": "but that ' s not enough to get out of here.",
+      "prediction": "so, i ' m going to do this one."
+    },
+    {
+      "reference": "we press this button, which opens the door.",
+      "prediction": "so, i ' m going to talk about the top, mr."
+    },
+    {
+      "reference": "hi, we ' re learning to play ukulele today.",
+      "prediction": "so, i ' m going to do this one."
+    },
+    {
+      "reference": "and checking out the second one.",
+      "prediction": "so, i ' m going to talk about the board."
+    },
+    {
+      "reference": "that ' s pretty good.",
+      "prediction": "it ' s a good way."
+    },
+    {
+      "reference": "that ' s pretty good.",
+      "prediction": "so, i ' m going to talk about the board."
+    },
+    {
+      "reference": "that ' s pretty good.",
+      "prediction": "so, i ' m going to talk about the top, mr."
+    },
+    {
+      "reference": "and that ' s how you tune a ukulele.",
+      "prediction": "so, i ' m going to start with the same thing."
+    }
+  ]
+}
