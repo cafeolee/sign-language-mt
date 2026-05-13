@@ -14,6 +14,12 @@ data:
   # Processed .npy sequences output directory
   processed_dir: "data/processed"
 
+  # Reduced vocabulary (built by build_vocab.py)
+  vocab_path: "data/vocab.json"
+
+  # Minimum token frequency to include in vocab (1 = keep everything in corpus)
+  vocab_min_freq: 1
+
   # Subset filter: only keep sentences with <= this many words
   max_sentence_words: 10
 
@@ -35,6 +41,9 @@ model:
   decoder_layers: 2
   decoder_dropout: 0.25
 
+  # vocab_size: set this to the value printed by build_vocab.py after running it
+  vocab_size: 6488
+
   # Shared
   max_output_length: 30
 
@@ -44,6 +53,6 @@ training:
   epochs: 100
   teacher_forcing_ratio: 0.5
   clip_grad_norm: 1.0
-  early_stopping_patience: 5
+  early_stopping_patience: 10
   label_smoothing: 0.1
   seed: 42
