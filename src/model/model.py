@@ -35,14 +35,19 @@ class Encoder(nn.Module):
             d_model=hidden_dim,
             nhead=nhead,
             dropout=dropout,
-            batch_first=True
+            batch_first=True,
+            norm_first=True,
         )
         self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x, src_key_padding_mask=None):
         x = self.projection(x)
         x = self.pos_encoding(x)
-        return self.transformer(x)
+
+        return self.transformer(
+            x,
+            src_key_padding_mask=src_key_padding_mask
+        )
 
 
 class Decoder(nn.Module):
@@ -56,15 +61,16 @@ class Decoder(nn.Module):
             d_model=hidden_dim,
             nhead=nhead,
             dropout=dropout,
-            batch_first=True
+            batch_first=True,
+            norm_first=True,
         )
         self.transformer = nn.TransformerDecoder(decoder_layer, num_layers=num_layers)
         self.output_projection = nn.Linear(hidden_dim, vocab_size)
 
-    def forward(self, tgt: torch.Tensor, memory: torch.Tensor, tgt_mask: torch.Tensor = None, tgt_key_padding_mask: torch.Tensor = None) -> torch.Tensor:
+    def forward(self, tgt, memory, tgt_mask=None, tgt_key_padding_mask=None, memory_key_padding_mask=None):
         x = self.embedding(tgt)
         x = self.pos_encoding(x)
-        x = self.transformer(x, memory, tgt_mask=tgt_mask, tgt_key_padding_mask=tgt_key_padding_mask)
+        x = self.transformer( x, memory, tgt_mask=tgt_mask, tgt_key_padding_mask=tgt_key_padding_mask, memory_key_padding_mask=memory_key_padding_mask)
         return self.output_projection(x)
  
     
@@ -91,7 +97,7 @@ class SignLanguageTransformer(nn.Module):
         mask = torch.triu(torch.ones(size, size), diagonal=1).bool()
         return mask
 
-    def forward(self, src: torch.Tensor, tgt: torch.Tensor, tgt_key_padding_mask: torch.Tensor = None) -> torch.Tensor:
-        memory = self.encoder(src)
+    def forward(self, src, tgt, src_key_padding_mask=None, tgt_key_padding_mask=None) -> torch.Tensor:
+        memory = self.encoder(src, src_key_padding_mask=src_key_padding_mask)
         tgt_mask = self.make_causal_mask(tgt.size(1)).to(src.device)
-        return self.decoder(tgt, memory, tgt_mask=tgt_mask, tgt_key_padding_mask=tgt_key_padding_mask)    
+        return self.decoder(tgt, memory, tgt_mask=tgt_mask, tgt_key_padding_mask=tgt_key_padding_mask, memory_key_padding_mask=src_key_padding_mask)    

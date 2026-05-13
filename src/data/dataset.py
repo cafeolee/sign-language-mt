@@ -36,5 +36,6 @@ class How2SignDataset(Dataset):
 
         labels = tokenized['input_ids'].squeeze(0)
         attention_mask = tokenized['attention_mask'].squeeze(0)
+        valid_frames = (sequence.abs().sum(dim=1) > 0)
 
-        return sequence, labels, attention_mask
+        return sequence, labels, attention_mask, valid_frames

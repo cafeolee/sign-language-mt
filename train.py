@@ -29,17 +29,26 @@ def train_epoch(model, dataloader, optimizer, criterion, device) -> float:
     model.train()
     total_loss = 0
 
-    for sequence, labels, attention_mask in dataloader:
+    for sequence, labels, attention_mask, valid_frames in dataloader:
         sequence  = sequence.to(device)
         labels    = labels.to(device)
         attention_mask = attention_mask.to(device)
 
+        src_key_padding_mask = ~valid_frames
+        src_key_padding_mask = src_key_padding_mask.to(device)
+
         tgt_input  = labels[:, :-1]
         tgt_output = labels[:, 1:]
+
         tgt_key_padding_mask = (attention_mask[:, :-1] == 0)
 
         optimizer.zero_grad()
-        output = model(sequence, tgt_input, tgt_key_padding_mask)
+        output = model(
+            sequence,
+            tgt_input,
+            src_key_padding_mask=src_key_padding_mask,
+            tgt_key_padding_mask=tgt_key_padding_mask
+        )
         
         output = output.reshape(-1, output.size(-1))
         tgt_output = tgt_output.reshape(-1)
@@ -60,16 +69,24 @@ def val_epoch(model, dataloader, criterion, device) -> float:
     total_loss = 0
 
     with torch.no_grad():
-        for sequence, labels, attention_mask in dataloader:
+        for sequence, labels, attention_mask, valid_frames in dataloader:
             sequence       = sequence.to(device)
             labels         = labels.to(device)
             attention_mask = attention_mask.to(device)
+
+            src_key_padding_mask = ~valid_frames
+            src_key_padding_mask = src_key_padding_mask.to(device)
 
             tgt_input  = labels[:, :-1]
             tgt_output = labels[:, 1:]
             tgt_key_padding_mask = (attention_mask[:, :-1] == 0)
 
-            output = model(sequence, tgt_input, tgt_key_padding_mask)
+            output = model(
+                sequence,
+                tgt_input,
+                src_key_padding_mask=src_key_padding_mask,
+                tgt_key_padding_mask=tgt_key_padding_mask
+            )
             output = output.reshape(-1, output.size(-1))
             tgt_output = tgt_output.reshape(-1)
 
@@ -94,7 +111,10 @@ def main():
 
     model     = SignLanguageTransformer(config).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config['training']['learning_rate'])
-    criterion = torch.nn.CrossEntropyLoss(ignore_index=0)
+    criterion = torch.nn.CrossEntropyLoss(ignore_index=0, label_smoothing=config['training']['label_smoothing'])
+
+    patience = config['training']['early_stopping_patience']
+    patience_counter = 0
 
     checkpoint_dir = Path('checkpoints')
     checkpoint_dir.mkdir(exist_ok=True)
@@ -109,8 +129,22 @@ def main():
 
         if val_loss < best_val_loss:
             best_val_loss = val_loss
-            torch.save(model.state_dict(), checkpoint_dir / 'best_model.pt')
-            print(f"  → checkpoint saved")
+            patience_counter = 0
+
+            torch.save(
+                model.state_dict(),
+                checkpoint_dir / 'best_model.pt'
+            )
+
+            print("  → checkpoint saved")
+
+        else:
+            patience_counter += 1
+            print(f"  → patience: {patience_counter}/{patience}")
+
+        if patience_counter >= patience:
+            print("\nEarly stopping triggered.")
+            break
 
 if __name__ == '__main__':
     main()
