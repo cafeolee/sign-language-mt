@@ -1,86 +1,89 @@
 {
-  "bleu": 2.4068092504006415,
-  "wer": 1.210846707249585,
+  "bleu": 2.152191729431406,
+  "wer": 1.547500461169526,
+  "beam_size": 5,
+  "length_penalty": 0.7,
+  "repetition_penalty": 1.3,
   "examples": [
     {
       "reference": "hi!",
-      "prediction": "hi!"
+      "prediction": "and then we ' re going to start with the same thing."
     },
     {
       "reference": "the rudder is the vertical stabilizer.",
-      "prediction": "i ' m going to talk about the board."
+      "prediction": "so, we ' re going to talk about the same thing."
     },
     {
       "reference": "this is what it will look like.",
-      "prediction": "so, i ' m going to talk about the top, mr."
+      "prediction": "and then we ' ll start with the same thing."
     },
     {
       "reference": "that ' s a good pike position.",
-      "prediction": "so, i ' m going to do this one."
+      "prediction": "we ' re going to start with the same thing."
     },
     {
       "reference": "i hope you ' re having fun.",
-      "prediction": "i ' m going to do this."
+      "prediction": "and then you want to use a little bit more time."
     },
     {
       "reference": "i ' m having fun.",
-      "prediction": "so, i ' m going to do it."
+      "prediction": "we ' re going to start with the same thing."
     },
     {
       "reference": "let me show you what good pike position is.",
-      "prediction": "so, i ' m going to talk about the board."
+      "prediction": "i ' m going to start with natural sundae."
     },
     {
       "reference": "okay, thank you.",
-      "prediction": "good."
+      "prediction": "and then we ' re going to start with the same thing."
     },
     {
       "reference": "you don ' t have to take big steps.",
-      "prediction": "so, i ' m going to do it."
+      "prediction": "and then you ' re going to do this one way."
     },
     {
       "reference": "try not to pick up your feet, okay?",
-      "prediction": "so, i ' m going to do this one."
+      "prediction": "and then we ' re going to start with the same thing."
     },
     {
       "reference": "we ' re going to actually slide.",
-      "prediction": "so, i ' m going to do it."
+      "prediction": "and then you ' re going to do this one way."
     },
     {
       "reference": "a company with which i have no affiliation.",
-      "prediction": "so, i ' m going to do this one."
+      "prediction": "and then you want to use a little bit more time."
     },
     {
       "reference": "but that ' s not enough to get out of here.",
-      "prediction": "so, i ' m going to do this one."
+      "prediction": "we ' re going to start with the same thing."
     },
     {
       "reference": "we press this button, which opens the door.",
-      "prediction": "so, i ' m going to talk about the top, mr."
+      "prediction": "so, we ' re going to start with the same thing."
     },
     {
       "reference": "hi, we ' re learning to play ukulele today.",
-      "prediction": "so, i ' m going to do this one."
+      "prediction": "we ' re going to start with the same thing."
     },
     {
       "reference": "and checking out the second one.",
-      "prediction": "so, i ' m going to talk about the board."
+      "prediction": "and then we ' re going to start with the same thing."
     },
     {
       "reference": "that ' s pretty good.",
-      "prediction": "it ' s a good way."
+      "prediction": "and then we ' re going to start with the same thing."
     },
     {
       "reference": "that ' s pretty good.",
-      "prediction": "so, i ' m going to talk about the board."
+      "prediction": "and then we ' re going to start with the same thing."
     },
     {
       "reference": "that ' s pretty good.",
-      "prediction": "so, i ' m going to talk about the top, mr."
+      "prediction": "so, i ' m going to do this one more time."
     },
     {
       "reference": "and that ' s how you tune a ukulele.",
-      "prediction": "so, i ' m going to start with the same thing."
+      "prediction": "and then we ' re going to start with the same thing."
     }
   ]
 }
