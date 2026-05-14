@@ -49,10 +49,10 @@ model:
 
 training:
   batch_size: 32
-  learning_rate: 0.00005
-  epochs: 100
+  learning_rate: 0.00001
+  epochs: 150
   teacher_forcing_ratio: 0.5
   clip_grad_norm: 1.0
-  early_stopping_patience: 10
-  label_smoothing: 0.1
+  early_stopping_patience: 25
+  label_smoothing: 0.2
   seed: 42

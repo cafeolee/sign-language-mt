@@ -109,6 +109,7 @@ def main():
 
     model     = SignLanguageTransformer(config).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config["training"]["learning_rate"])
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5)
     criterion = torch.nn.CrossEntropyLoss(
         ignore_index=0,
         label_smoothing=config["training"]["label_smoothing"],
@@ -124,6 +125,7 @@ def main():
     for epoch in range(config["training"]["epochs"]):
         train_loss = train_epoch(model, train_loader, optimizer, criterion, device)
         val_loss   = val_epoch(model, val_loader, criterion, device)
+        scheduler.step(val_loss)
 
         print(f"Epoch {epoch+1}/{config['training']['epochs']} | train loss: {train_loss:.4f} | val loss: {val_loss:.4f}")
 
