@@ -1,89 +1,89 @@
 {
-  "bleu": 1.1508212990848585,
-  "chrf": 14.54657177416788,
+  "bleu": 1.3036500455129179,
+  "chrf": 12.707879131095043,
   "beam_size": 5,
   "length_penalty": 0.7,
   "repetition_penalty": 1.3,
   "examples": [
     {
       "reference": "hi!",
-      "prediction": "and, i ' m stan defreitas, it ' s not a little bit."
+      "prediction": "it ' s not very important, four."
     },
     {
       "reference": "the rudder is the vertical stabilizer.",
-      "prediction": "and then we ' re going to talk about the same thing."
+      "prediction": "it ' s not a little bit more time, okay."
     },
     {
       "reference": "this is what it will look like.",
-      "prediction": "it ' s going to talk about a little bit more time."
+      "prediction": "it ' s not going to be a little bit."
     },
     {
       "reference": "that ' s a good pike position.",
-      "prediction": "i ' m using a little bit more time, you can see."
+      "prediction": "it ' s going to be a little bit more time."
     },
     {
       "reference": "i hope you ' re having fun.",
-      "prediction": "so, i ' m going to talk about how to do it."
+      "prediction": "you ' re not going to do this one, four."
     },
     {
       "reference": "i ' m having fun.",
-      "prediction": "so, you ' re going to talk about how to do it."
+      "prediction": "it ' s not a little bit more time."
     },
     {
       "reference": "let me show you what good pike position is.",
-      "prediction": "so, i ' m stan defreitas, mr."
+      "prediction": "it ' s very important to be a little bit."
     },
     {
       "reference": "okay, thank you.",
-      "prediction": "and that ' s how you can do it in there we go."
+      "prediction": "we ' re going to do it in there."
     },
     {
       "reference": "you don ' t have to take big steps.",
-      "prediction": "it ' s just going to be a little bit more time."
+      "prediction": "it ' s going to be a little bit more."
     },
     {
       "reference": "try not to pick up your feet, okay?",
-      "prediction": "it ' s not going to be a little bit more time."
+      "prediction": "it ' s going to be a little bit more."
     },
     {
       "reference": "we ' re going to actually slide.",
-      "prediction": "it ' s just going to do a little bit more time."
+      "prediction": "it ' s not going to be a little bit."
     },
     {
       "reference": "a company with which i have no affiliation.",
-      "prediction": "you ' re going to talk about a little bit more time, okay?"
+      "prediction": "you ' re going to use a little bit more time."
     },
     {
       "reference": "but that ' s not enough to get out of here.",
-      "prediction": "so, i ' m going to talk about this is called the skin."
+      "prediction": "you ' re going to use a little bit more time."
     },
     {
       "reference": "we press this button, which opens the door.",
-      "prediction": "it ' s not going to be a little bit more time."
-    },
-    {
-      "reference": "hi, we ' re learning to play ukulele today.",
-      "prediction": "i ' m going to talk about how to do it."
-    },
-    {
-      "reference": "and checking out the second one.",
-      "prediction": "and that ' s what i ' m going to do this one."
-    },
-    {
-      "reference": "that ' s pretty good.",
-      "prediction": "so, we ' re going to talk about a little bit."
-    },
-    {
-      "reference": "that ' s pretty good.",
-      "prediction": "so, we ' re going to start with a little bit."
-    },
-    {
-      "reference": "that ' s pretty good.",
       "prediction": "it ' s not going to be a little bit more."
     },
     {
+      "reference": "hi, we ' re learning to play ukulele today.",
+      "prediction": "this is how you ' ll do a little bit."
+    },
+    {
+      "reference": "and checking out the second one.",
+      "prediction": "it ' s very important to be a little bit."
+    },
+    {
+      "reference": "that ' s pretty good.",
+      "prediction": "that ' s what you can do a little bit."
+    },
+    {
+      "reference": "that ' s pretty good.",
+      "prediction": "and then we ' ve got a little bit more time."
+    },
+    {
+      "reference": "that ' s pretty good.",
+      "prediction": "it ' s not going to be a little bit."
+    },
+    {
       "reference": "and that ' s how you tune a ukulele.",
-      "prediction": "and then you ' re going to do it in the ball."
+      "prediction": "it ' s not a little bit more time, okay."
     }
   ]
 }

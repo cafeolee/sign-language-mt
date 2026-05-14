@@ -53,6 +53,6 @@ training:
   epochs: 150
   teacher_forcing_ratio: 0.5
   clip_grad_norm: 1.0
-  early_stopping_patience: 25
-  label_smoothing: 0.2
+  early_stopping_patience: 20
+  label_smoothing: 0.1
   seed: 42

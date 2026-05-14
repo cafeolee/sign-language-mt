@@ -23,53 +23,29 @@ def load_config(config_path: str = "configs/config.yaml") -> dict:
         return yaml.safe_load(f)
 
 
-def train_epoch(model, dataloader, optimizer, criterion, device, epoch, max_epochs) -> float:
-    """Runs one full training epoch with scheduled sampling."""
+def train_epoch(model, dataloader, optimizer, criterion, device) -> float:
+    """Runs one full training epoch and returns the average loss."""
     model.train()
     total_loss = 0
-    
-    teacher_forcing_ratio = max(0.5, 1.0 - (epoch / (max_epochs * 0.6)))
-    
     for sequence, labels, attention_mask, valid_frames in dataloader:
-        sequence  = sequence.to(device)
-        labels    = labels.to(device)
+        sequence = sequence.to(device)
+        labels = labels.to(device)
         attention_mask = attention_mask.to(device)
         
         src_key_padding_mask = ~valid_frames
         src_key_padding_mask = src_key_padding_mask.to(device)
         
-        tgt_input  = labels[:, :-1]
+        tgt_input = labels[:, :-1]
         tgt_output = labels[:, 1:]
         tgt_key_padding_mask = (attention_mask[:, :-1] == 0)
         
         optimizer.zero_grad()
-        
-        if random.random() > teacher_forcing_ratio:
-            model.eval()
-            with torch.no_grad():
-                memory = model.encoder(sequence, src_key_padding_mask=src_key_padding_mask)
-                generated = tgt_input[:, 0].unsqueeze(1) 
-                
-                for t in range(tgt_input.size(1) - 1):
-                    tgt_mask = model.make_causal_mask(generated.size(1)).to(device)
-                    out = model.decoder(generated, memory, tgt_mask=tgt_mask)
-                    next_token = out[:, -1, :].argmax(dim=-1, keepdim=True)
-                    generated = torch.cat([generated, next_token], dim=1)
-            model.train()
-            
-            output = model(
-                sequence, 
-                generated, 
-                src_key_padding_mask=src_key_padding_mask,
-                tgt_key_padding_mask=tgt_key_padding_mask
-            )
-        else:
-            output = model(
-                sequence,
-                tgt_input,
-                src_key_padding_mask=src_key_padding_mask,
-                tgt_key_padding_mask=tgt_key_padding_mask
-            )
+        output = model(
+            sequence,
+            tgt_input,
+            src_key_padding_mask=src_key_padding_mask,
+            tgt_key_padding_mask=tgt_key_padding_mask
+        )
                 
         output = output.reshape(-1, output.size(-1))
         tgt_output = tgt_output.reshape(-1)
@@ -79,7 +55,6 @@ def train_epoch(model, dataloader, optimizer, criterion, device, epoch, max_epoc
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
         total_loss += loss.item()
-        
     return total_loss / len(dataloader)
 
 
@@ -90,8 +65,8 @@ def val_epoch(model, dataloader, criterion, device) -> float:
 
     with torch.no_grad():
         for sequence, labels, attention_mask, valid_frames in dataloader:
-            sequence       = sequence.to(device)
-            labels         = labels.to(device)
+            sequence = sequence.to(device)
+            labels = labels.to(device)
             attention_mask = attention_mask.to(device)
 
             src_key_padding_mask = (~valid_frames).to(device)
@@ -125,12 +100,12 @@ def main():
     vocab_path = config["data"]["vocab_path"]
 
     train_dataset = How2SignDataset(config["data"]["processed_dir"], "train", vocab_path=vocab_path)
-    val_dataset   = How2SignDataset(config["data"]["processed_dir"], "val",   vocab_path=vocab_path)
+    val_dataset = How2SignDataset(config["data"]["processed_dir"], "val",   vocab_path=vocab_path)
 
     train_loader = DataLoader(train_dataset, batch_size=config["training"]["batch_size"], shuffle=True)
-    val_loader   = DataLoader(val_dataset,   batch_size=config["training"]["batch_size"])
+    val_loader = DataLoader(val_dataset,   batch_size=config["training"]["batch_size"])
 
-    model     = SignLanguageTransformer(config).to(device)
+    model = SignLanguageTransformer(config).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config["training"]["learning_rate"])
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5)
     criterion = torch.nn.CrossEntropyLoss(
@@ -138,7 +113,7 @@ def main():
         label_smoothing=config["training"]["label_smoothing"],
     )
 
-    patience         = config["training"]["early_stopping_patience"]
+    patience = config["training"]["early_stopping_patience"]
     patience_counter = 0
     best_val_loss    = float("inf")
 
@@ -146,7 +121,7 @@ def main():
     checkpoint_dir.mkdir(exist_ok=True)
 
     for epoch in range(config["training"]["epochs"]):
-        train_loss = train_epoch(model, train_loader, optimizer, criterion, device, epoch, config['training']['epochs'])
+        train_loss = train_epoch(model, train_loader, optimizer, criterion, device)
         val_loss   = val_epoch(model, val_loader, criterion, device)
         scheduler.step(val_loss)
 
