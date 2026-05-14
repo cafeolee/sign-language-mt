@@ -26,12 +26,12 @@ data:
   # Sequence length: pad/truncate all clips to this many frames
   max_frames: 150
 
-  # Keypoint feature size: OpenPose body(75) + face(210) + hands(126) = 411
-  feature_dim: 411
+  # Keypoint feature size: OpenPose body(75) + face(210) + hands(126) = 411 --> preprocessing --> 274
+  feature_dim: 274
 
 model:
   # Encoder
-  input_dim: 411
+  input_dim: 274
   encoder_hidden_dim: 256
   encoder_layers: 2
   encoder_dropout: 0.25
