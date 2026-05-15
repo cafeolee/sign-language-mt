@@ -18,91 +18,92 @@ def beam_search_decode(
     model,
     src,
     src_key_padding_mask,
-    tokenizer: CorpusTokenizer,
-    max_length: int,
+    tokenizer,
+    max_length,
     device,
-    beam_size: int = 5,
-    length_penalty: float = 0.7,
-    repetition_penalty: float = 1.3,
-) -> str:
-    """
-    Beam search decoder with length penalty and repetition penalty.
-
-    Args:
-        beam_size:          Number of beams to explore in parallel.
-        length_penalty:     Alpha for length normalization. 0.7 works well
-                            for short sentences.
-        repetition_penalty: > 1.0 discourages repeating the same token.
-    """
+    beam_size=5,
+    length_penalty=0.7,
+    repetition_penalty=1.3,
+):
     model.eval()
-
     src = src.unsqueeze(0).to(device)
     src_key_padding_mask = src_key_padding_mask.unsqueeze(0).to(device)
 
     with torch.no_grad():
-        memory = model.encoder(src, src_key_padding_mask=src_key_padding_mask)
+        memory_single = model.encoder(src, src_key_padding_mask=src_key_padding_mask)
+        # Expande memory para beam_size → (beam_size, T, hidden_dim)
+        memory = memory_single.expand(beam_size, -1, -1).contiguous()
+        mem_mask = src_key_padding_mask.expand(beam_size, -1).contiguous()
 
     cls_id = tokenizer.cls_token_id
     sep_id = tokenizer.sep_token_id
 
-    # Each beam: (log_prob, token_ids_list)
+    # (score, tokens, beam_idx)
     beams = [(0.0, [cls_id])]
     completed = []
 
     with torch.no_grad():
-        for _ in range(max_length):
+        for step in range(max_length):
+            if not beams:
+                break
+
+            n_active = len(beams)
+            # Construye batch de todos los beams activos
+            tgt_batch = torch.tensor(
+                [b[1] for b in beams], dtype=torch.long, device=device
+            )  # (n_active, current_len)
+
+            tgt_mask = model.make_causal_mask(tgt_batch.size(1)).to(device)
+
+            # Usa solo las primeras n_active filas de memory
+            output = model.decoder(
+                tgt_batch,
+                memory[:n_active],
+                tgt_mask=tgt_mask,
+                memory_key_padding_mask=mem_mask[:n_active],  # ← FIX crítico
+            )
+
+            logits = output[:, -1, :]  # (n_active, vocab_size)
+
             all_candidates = []
-
-            for log_prob, tokens in beams:
-                if tokens[-1] == sep_id:
-                    all_candidates.append((log_prob, tokens))
-                    continue
-
-                tgt = torch.tensor([tokens], dtype=torch.long).to(device)
-                tgt_mask = model.make_causal_mask(tgt.size(1)).to(device)
-                output = model.decoder(tgt, memory, tgt_mask=tgt_mask)
-
-                logits = output[0, -1, :]
+            for i, (log_prob, tokens) in enumerate(beams):
+                token_logits = logits[i].clone()
 
                 # Repetition penalty
                 for token_id in set(tokens):
-                    if logits[token_id] > 0:
-                        logits[token_id] /= repetition_penalty
+                    if token_logits[token_id] > 0:
+                        token_logits[token_id] /= repetition_penalty
                     else:
-                        logits[token_id] *= repetition_penalty
+                        token_logits[token_id] *= repetition_penalty
 
-                log_probs = torch.log_softmax(logits, dim=-1)
-                topk_log_probs, topk_ids = log_probs.topk(beam_size)
+                lp = torch.log_softmax(token_logits, dim=-1)
+                topk_lp, topk_ids = lp.topk(beam_size)
 
-                for next_log_prob, next_id in zip(
-                    topk_log_probs.tolist(), topk_ids.tolist()
-                ):
+                for next_lp, next_id in zip(topk_lp.tolist(), topk_ids.tolist()):
                     candidate = tokens + [next_id]
-                    length = len(candidate)
-                    score = (log_prob + next_log_prob) / (length ** length_penalty)
+                    length_norm = (len(candidate) ** length_penalty)
+                    score = (log_prob * (len(tokens) ** length_penalty) + next_lp) / length_norm
                     all_candidates.append((score, candidate))
 
             all_candidates.sort(key=lambda x: x[0], reverse=True)
-            beams = all_candidates[:beam_size]
 
-            still_running = []
-            for score, tokens in beams:
+            beams = []
+            for score, tokens in all_candidates:
                 if tokens[-1] == sep_id:
                     completed.append((score, tokens))
                 else:
-                    still_running.append((score, tokens))
-            beams = still_running
+                    beams.append((score, tokens))
+                if len(beams) >= beam_size:
+                    break
 
             if len(completed) >= beam_size:
                 break
 
     if not completed:
-        completed = beams
+        completed = beams if beams else [(0.0, [cls_id])]
 
     completed.sort(key=lambda x: x[0], reverse=True)
-    best_tokens = completed[0][1]
-
-    return tokenizer.decode(best_tokens, skip_special_tokens=True)
+    return tokenizer.decode(completed[0][1], skip_special_tokens=True)
 
 
 def evaluate(config_path: str = "configs/config.yaml"):
