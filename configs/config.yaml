@@ -17,18 +17,17 @@ data:
   feature_dim: 274
 
 model:
-  vocab_size: 6488
   decoder_hidden_dim: 256
-  decoder_layers: 4        # Upgraded from 2 to avoid text translation bottleneck
-  decoder_dropout: 0.3     # Higher regularization
-  freeze_epochs: 5         # Reduced from 10 to learn spatial details sooner
-  max_output_length: 30    # Must match training dataset token lengths
-  encoder_dropout: 0.1
+  decoder_layers: 4
+  decoder_dropout: 0.35
+  freeze_epochs: 12 
+  encoder_dropout: 0.15    
+  max_output_length: 30
 
 training:
   seed: 42
-  learning_rate: 0.0003    # Slightly higher to provide strong gradients to decoder
-  label_smoothing: 0.15    # Prevent early overconfidence
+  learning_rate: 0.0003 
+  label_smoothing: 0.15 
   batch_size: 32
   epochs: 40
   early_stopping_patience: 8
