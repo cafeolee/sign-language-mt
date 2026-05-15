@@ -1,57 +1,43 @@
 data:
-  # Raw OpenPose keypoint JSONs from How2Sign
   keypoints_dir:
     train: "data/keypoints/train_2D_keypoints/openpose_output/json"
     val:   "data/keypoints/val_2D_keypoints/openpose_output/json"
     test:  "data/keypoints/test_2D_keypoints/openpose_output/json"
 
-  # Realigned translation CSVs
   translations_dir:
     train: "data/translations/how2sign_realigned_train.csv"
     val:   "data/translations/how2sign_realigned_val.csv"
     test:  "data/translations/how2sign_realigned_test.csv"
 
-  # Processed .npy sequences output directory
   processed_dir: "data/processed"
-
-  # Reduced vocabulary (built by build_vocab.py)
   vocab_path: "data/vocab.json"
-
-  # Minimum token frequency to include in vocab (1 = keep everything in corpus)
   vocab_min_freq: 1
-
-  # Subset filter: only keep sentences with <= this many words
   max_sentence_words: 10
-
-  # Sequence length: pad/truncate all clips to this many frames
   max_frames: 150
-
-  # Keypoint feature size: OpenPose body(75) + face(210) + hands(126) = 411 --> preprocessing --> 274
   feature_dim: 274
 
 model:
-  # Encoder
+  # MotionBERT encoder output is projected to decoder_hidden_dim
+  # input_dim is ignored (MotionBERT handles its own input)
   input_dim: 274
-  encoder_hidden_dim: 256
-  encoder_layers: 2
-  encoder_dropout: 0.25
 
   # Decoder
   decoder_hidden_dim: 256
   decoder_layers: 2
   decoder_dropout: 0.25
 
-  # vocab_size: set this to the value printed by build_vocab.py after running it
-  vocab_size: 6488
+  # MotionBERT freeze schedule:
+  # Epochs 0..freeze_epochs-1: backbone frozen, only decoder trains
+  # Epoch freeze_epochs onwards: full fine-tuning
+  freeze_epochs: 10
 
-  # Shared
+  vocab_size: 6488
   max_output_length: 30
 
 training:
   batch_size: 32
-  learning_rate: 0.00003
+  learning_rate: 0.0001   # higher lr ok — backbone starts frozen
   epochs: 150
-  teacher_forcing_ratio: 0.5
   clip_grad_norm: 1.0
   early_stopping_patience: 20
   label_smoothing: 0.1
