@@ -102,9 +102,22 @@ def main():
 
     vocab_path = config["data"]["vocab_path"]
 
-    train_dataset = How2SignDataset(config["data"]["processed_dir"], "train", vocab_path=vocab_path)
-    val_dataset   = How2SignDataset(config["data"]["processed_dir"], "val",   vocab_path=vocab_path)
+    # Get max output length from config to synchronize lengths
+    max_out_len = config["model"].get("max_output_length", 30)
 
+    train_dataset = How2SignDataset(
+        config["data"]["processed_dir"], 
+        "train", 
+        vocab_path=vocab_path,
+        max_output_length=max_out_len
+    )
+    val_dataset = How2SignDataset(
+        config["data"]["processed_dir"], 
+        "val",   
+        vocab_path=vocab_path,
+        max_output_length=max_out_len
+    )
+    
     print(f"Train samples : {len(train_dataset)}")
     print(f"Val samples   : {len(val_dataset)}")
     print(f"Vocab size    : {config['model']['vocab_size']}")

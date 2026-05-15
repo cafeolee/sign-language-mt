@@ -12,7 +12,7 @@ data:
   processed_dir: "data/processed"
   vocab_path: "data/vocab.json"
   vocab_min_freq: 1
-  max_sentence_words: 10
+  max_sentence_words: 30
   max_frames: 150
   feature_dim: 274
 
