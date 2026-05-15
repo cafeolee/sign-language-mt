@@ -124,7 +124,7 @@ class MotionBERTEncoder(nn.Module):
             dim_rep=512,
             depth=5,
             num_heads=8,
-            mlp_ratio=2,
+            mlp_ratio=4,
             num_joints=17,
             maxlen=243,
             att_fuse=True,
