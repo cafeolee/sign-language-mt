@@ -17,28 +17,15 @@ data:
   feature_dim: 274
 
 model:
-  # MotionBERT encoder output is projected to decoder_hidden_dim
-  # input_dim is ignored (MotionBERT handles its own input)
-  input_dim: 274
-
-  # Decoder
   decoder_hidden_dim: 256
-  decoder_layers: 2
-  decoder_dropout: 0.25
-
-  # MotionBERT freeze schedule:
-  # Epochs 0..freeze_epochs-1: backbone frozen, only decoder trains
-  # Epoch freeze_epochs onwards: full fine-tuning
-  freeze_epochs: 10
-
-  vocab_size: 6488
-  max_output_length: 30
+  decoder_layers: 4        # Upgraded from 2 to avoid text translation bottleneck
+  decoder_dropout: 0.3     # Higher regularization
+  freeze_epochs: 5         # Reduced from 10 to learn spatial details sooner
+  max_output_length: 30    # Must match training dataset token lengths
 
 training:
+  learning_rate: 0.0003    # Slightly higher to provide strong gradients to decoder
+  label_smoothing: 0.15    # Prevent early overconfidence
   batch_size: 32
-  learning_rate: 0.0001   # higher lr ok — backbone starts frozen
-  epochs: 150
-  clip_grad_norm: 1.0
-  early_stopping_patience: 20
-  label_smoothing: 0.1
-  seed: 42
+  epochs: 40
+  early_stopping_patience: 8

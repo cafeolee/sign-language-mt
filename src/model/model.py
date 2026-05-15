@@ -107,12 +107,6 @@ class PositionalEncoding(nn.Module):
 class MotionBERTEncoder(nn.Module):
     """
     Wraps DSTformer (MotionBERT-Lite) as an encoder for sign language sequences.
-
-    Pipeline:
-        (B, T, 274)  →  extract_h36m  →  (B, T, 17, 3)
-                     →  DSTformer     →  (B, T, 17, 512)
-                     →  mean over joints  →  (B, T, 512)
-                     →  projection    →  (B, T, hidden_dim)
     """
 
     CHECKPOINT = Path(__file__).parent / "pretrained" / "checkpoint" / "pretrain" / "MB_lite" / "latest_epoch.bin"
@@ -123,7 +117,6 @@ class MotionBERTEncoder(nn.Module):
         self.freeze_epochs = freeze_epochs
         self._current_epoch = 0
 
-        # MotionBERT-Lite config (matches MB_lite.yaml)
         self.dstformer = DSTformer(
             dim_in=3,
             dim_out=3,
@@ -137,29 +130,44 @@ class MotionBERTEncoder(nn.Module):
             att_fuse=True,
         )
 
-        # Load pretrained weights
+        # Fix checkpoint layer names mapping (removes 'module.' and 'model_pos.')
         if self.CHECKPOINT.exists():
             state = torch.load(self.CHECKPOINT, map_location="cpu")
-            # Checkpoint may be wrapped under 'model' key
-            if "model" in state:
-                state = state["model"]
-            missing, unexpected = self.dstformer.load_state_dict(state, strict=False)
+            
+            # Extract internal state dict
+            if "model_pos" in state:
+                ckpt_dict = state["model_pos"]
+            elif "model" in state:
+                ckpt_dict = state["model"]
+            else:
+                ckpt_dict = state
+
+            # Strip prefixes added by DataParallel or container keys
+            cleaned_dict = {}
+            for k, v in ckpt_dict.items():
+                if k.startswith("module."):
+                    cleaned_dict[k.replace("module.", "")] = v
+                elif k.startswith("model_pos."):
+                    cleaned_dict[k.replace("model_pos.", "")] = v
+                else:
+                    cleaned_dict[k] = v
+
+            missing, unexpected = self.dstformer.load_state_dict(cleaned_dict, strict=False)
             print(f"[MotionBERTEncoder] Loaded checkpoint: {self.CHECKPOINT.name}")
+            print(f"  Successfully matched: {len(cleaned_dict) - len(unexpected)} keys")
             if missing:
-                print(f"  Missing keys  : {len(missing)}")
+                print(f"  Missing keys   : {len(missing)}")
             if unexpected:
                 print(f"  Unexpected keys: {len(unexpected)}")
         else:
             print(f"[MotionBERTEncoder] WARNING: checkpoint not found at {self.CHECKPOINT}")
 
-        # Projection: 512 → hidden_dim
         self.projection = nn.Sequential(
             nn.Linear(512, hidden_dim),
             nn.LayerNorm(hidden_dim),
             nn.Dropout(dropout),
         )
 
-        # Start frozen
         self._freeze_backbone()
 
     def _freeze_backbone(self):
@@ -171,32 +179,16 @@ class MotionBERTEncoder(nn.Module):
             p.requires_grad = True
 
     def set_epoch(self, epoch: int):
-        """Called from train loop to handle freeze/unfreeze schedule."""
         self._current_epoch = epoch
         if epoch == self.freeze_epochs:
             self._unfreeze_backbone()
             print(f"[MotionBERTEncoder] Epoch {epoch}: backbone unfrozen for fine-tuning.")
 
     def forward(self, x: torch.Tensor, src_key_padding_mask=None) -> torch.Tensor:
-        """
-        Args:
-            x: (B, T, 274) normalized OpenPose keypoints
-            src_key_padding_mask: ignored (MotionBERT handles variable length internally)
-        Returns:
-            (B, T, hidden_dim)
-        """
-        # Convert to H36M format
         h36m = extract_h36m_from_openpose(x)          # (B, T, 17, 3)
-
-        # Get MotionBERT representations
         rep = self.dstformer.get_representation(h36m)  # (B, T, 17, 512)
-
-        # Pool over joints → (B, T, 512)
-        rep = rep.mean(dim=2)
-
-        # Project → (B, T, hidden_dim)
-        out = self.projection(rep)
-
+        rep = rep.mean(dim=2)                          # Pool joints -> (B, T, 512)
+        out = self.projection(rep)                     # Project -> (B, T, hidden_dim)
         return out
 
 
