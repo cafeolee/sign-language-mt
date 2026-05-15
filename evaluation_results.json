@@ -1,6 +1,6 @@
 {
-  "bleu": 2.586625678399301,
-  "chrf": 13.248956520910449,
+  "bleu": 1.983201906976715,
+  "chrf": 11.601848909512281,
   "beam_size": 5,
   "length_penalty": 0.7,
   "repetition_penalty": 1.3,
@@ -11,79 +11,79 @@
     },
     {
       "reference": "the rudder is the vertical stabilizer.",
-      "prediction": "so, we ' re going to go ahead and shake."
+      "prediction": "i ' m going to talk about how you."
     },
     {
       "reference": "this is what it will look like.",
-      "prediction": "so, we ' re going to go ahead and shake."
+      "prediction": "i ' m going to talk about how you."
     },
     {
       "reference": "that ' s a good pike position.",
-      "prediction": "that ' s why you want to do it."
+      "prediction": "i ' m going to show you."
     },
     {
       "reference": "i hope you ' re having fun.",
-      "prediction": "that ' s why you want to do it."
+      "prediction": "i ' m going to show you."
     },
     {
       "reference": "i ' m having fun.",
-      "prediction": "that ' s why you want to do it."
+      "prediction": "there we go."
     },
     {
       "reference": "let me show you what good pike position is.",
-      "prediction": "and that ' s what you want to do."
+      "prediction": "i ' m going to talk about how you."
     },
     {
       "reference": "okay, thank you.",
-      "prediction": "hi!"
+      "prediction": "we ' re going to start off the back."
     },
     {
       "reference": "you don ' t have to take big steps.",
-      "prediction": "and that ' s why you want to do it."
+      "prediction": "i ' m going to start with the top."
     },
     {
       "reference": "try not to pick up your feet, okay?",
-      "prediction": "it ' s going to be a little bit more."
+      "prediction": "i ' m going to show you."
     },
     {
       "reference": "we ' re going to actually slide.",
-      "prediction": "and that ' s how you do it."
+      "prediction": "i ' m going to start with the ball."
     },
     {
       "reference": "a company with which i have no affiliation.",
-      "prediction": "and that ' s how you do it."
+      "prediction": "i ' m going to show you."
     },
     {
       "reference": "but that ' s not enough to get out of here.",
-      "prediction": "and that ' s why you want to do it."
+      "prediction": "i ' m going to show you."
     },
     {
       "reference": "we press this button, which opens the door.",
-      "prediction": "so, we ' re going to go ahead and shake."
+      "prediction": "i ' m going to talk about how you."
     },
     {
       "reference": "hi, we ' re learning to play ukulele today.",
-      "prediction": "and that ' s why you want to do it."
+      "prediction": "i ' m going to show you."
     },
     {
       "reference": "and checking out the second one.",
-      "prediction": "and that ' s what you want to do."
+      "prediction": "i ' m going to talk about how you."
     },
     {
       "reference": "that ' s pretty good.",
-      "prediction": "that ' s why you want to do it."
+      "prediction": "okay?"
     },
     {
       "reference": "that ' s pretty good.",
-      "prediction": "and that ' s what you want to do."
+      "prediction": "i ' m going to start with my left foot."
     },
     {
       "reference": "that ' s pretty good.",
-      "prediction": "so, we ' re going to go ahead and shake."
+      "prediction": "now we ' re going to start with our wagon."
     },
     {
       "reference": "and that ' s how you tune a ukulele.",
-      "prediction": "and that ' s why you want to do it."
+      "prediction": "now we ' re going to start with our lava."
     }
   ]
 }

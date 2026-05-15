@@ -17,7 +17,7 @@ data:
   feature_dim: 274
 
 model:
-  vocab_size: 6488
+  vocab_size: 11711
   decoder_hidden_dim: 256
   decoder_layers: 4
   decoder_dropout: 0.35
