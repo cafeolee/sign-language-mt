@@ -24,6 +24,7 @@ model:
   max_output_length: 30    # Must match training dataset token lengths
 
 training:
+  seed: 42
   learning_rate: 0.0003    # Slightly higher to provide strong gradients to decoder
   label_smoothing: 0.15    # Prevent early overconfidence
   batch_size: 32
