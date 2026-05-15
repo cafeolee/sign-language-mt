@@ -162,11 +162,18 @@ class MotionBERTEncoder(nn.Module):
         else:
             print(f"[MotionBERTEncoder] WARNING: checkpoint not found at {self.CHECKPOINT}")
 
-        self.projection = nn.Sequential(
-            nn.Linear(512, hidden_dim),
-            nn.LayerNorm(hidden_dim),
+        self.hand_projection = nn.Sequential(
+            nn.Linear(84, 128),
+            nn.LayerNorm(128),
+            nn.ReLU(),
             nn.Dropout(dropout),
         )
+        self.joint_attn = nn.Linear(512, 1)
+        self.projection = nn.Sequential(
+            nn.Linear(512 + 128, hidden_dim),
+            nn.LayerNorm(hidden_dim),
+            nn.Dropout(dropout),
+)
 
         self._freeze_backbone()
 
@@ -186,9 +193,18 @@ class MotionBERTEncoder(nn.Module):
 
     def forward(self, x: torch.Tensor, src_key_padding_mask=None) -> torch.Tensor:
         h36m = extract_h36m_from_openpose(x)          # (B, T, 17, 3)
-        rep = self.dstformer.get_representation(h36m)  # (B, T, 17, 512)
-        rep = rep.mean(dim=2)                          # Pool joints -> (B, T, 512)
-        out = self.projection(rep)                     # Project -> (B, T, hidden_dim)
+        rep = self.dstformer.get_representation(h36m)       # (B, T, 17, 512)
+
+        # Learned attention over joints instead of mean pooling
+        attn_w = torch.softmax(self.joint_attn(rep), dim=2) # (B, T, 17, 1)
+        body_rep = (rep * attn_w).sum(dim=2)                # (B, T, 512)
+
+        # Hand stream (left: 190:232, right: 232:274 → total 84 features)
+        hands = x[:, :, 190:274]                            # (B, T, 84)
+        hands_rep = self.hand_projection(hands)             # (B, T, 128)
+
+        combined = torch.cat([body_rep, hands_rep], dim=-1) # (B, T, 640)
+        out = self.projection(combined)                     # (B, T, hidden_dim)
         return out
 
 

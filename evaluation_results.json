@@ -1,6 +1,6 @@
 {
-  "bleu": 2.811657640249213,
-  "chrf": 14.547940328147677,
+  "bleu": 2.586625678399301,
+  "chrf": 13.248956520910449,
   "beam_size": 5,
   "length_penalty": 0.7,
   "repetition_penalty": 1.3,
@@ -11,27 +11,27 @@
     },
     {
       "reference": "the rudder is the vertical stabilizer.",
-      "prediction": "so, we ' re going to talk about self defense."
+      "prediction": "so, we ' re going to go ahead and shake."
     },
     {
       "reference": "this is what it will look like.",
-      "prediction": "so, we ' re going to talk about self defense."
+      "prediction": "so, we ' re going to go ahead and shake."
     },
     {
       "reference": "that ' s a good pike position.",
-      "prediction": "we ' re going to start with our next segment."
+      "prediction": "that ' s why you want to do it."
     },
     {
       "reference": "i hope you ' re having fun.",
-      "prediction": "it ' s going to be a little bit more."
+      "prediction": "that ' s why you want to do it."
     },
     {
       "reference": "i ' m having fun.",
-      "prediction": "it ' s very simple."
+      "prediction": "that ' s why you want to do it."
     },
     {
       "reference": "let me show you what good pike position is.",
-      "prediction": "we ' re going to start with our elbows."
+      "prediction": "and that ' s what you want to do."
     },
     {
       "reference": "okay, thank you.",
@@ -39,51 +39,51 @@
     },
     {
       "reference": "you don ' t have to take big steps.",
-      "prediction": "it ' s going to be a little bit more."
+      "prediction": "and that ' s why you want to do it."
     },
     {
       "reference": "try not to pick up your feet, okay?",
-      "prediction": "we ' re going to start with our next segment."
-    },
-    {
-      "reference": "we ' re going to actually slide.",
       "prediction": "it ' s going to be a little bit more."
     },
     {
+      "reference": "we ' re going to actually slide.",
+      "prediction": "and that ' s how you do it."
+    },
+    {
       "reference": "a company with which i have no affiliation.",
-      "prediction": "we ' re going to start with our elbows."
+      "prediction": "and that ' s how you do it."
     },
     {
       "reference": "but that ' s not enough to get out of here.",
-      "prediction": "we ' re going to start with our elbows."
+      "prediction": "and that ' s why you want to do it."
     },
     {
       "reference": "we press this button, which opens the door.",
-      "prediction": "so, we ' re going to talk about self defense."
+      "prediction": "so, we ' re going to go ahead and shake."
     },
     {
       "reference": "hi, we ' re learning to play ukulele today.",
-      "prediction": "now we ' re going to start with our next segment."
+      "prediction": "and that ' s why you want to do it."
     },
     {
       "reference": "and checking out the second one.",
-      "prediction": "so we ' re going to start with our next segment."
+      "prediction": "and that ' s what you want to do."
     },
     {
       "reference": "that ' s pretty good.",
-      "prediction": "it ' s very simple."
+      "prediction": "that ' s why you want to do it."
     },
     {
       "reference": "that ' s pretty good.",
-      "prediction": "we ' re going to start with our image."
+      "prediction": "and that ' s what you want to do."
     },
     {
       "reference": "that ' s pretty good.",
-      "prediction": "so, we ' re going to talk about self defense."
+      "prediction": "so, we ' re going to go ahead and shake."
     },
     {
       "reference": "and that ' s how you tune a ukulele.",
-      "prediction": "we ' re going to start with our image."
+      "prediction": "and that ' s why you want to do it."
     }
   ]
 }
