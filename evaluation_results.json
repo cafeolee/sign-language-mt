@@ -1,6 +1,6 @@
 {
-  "bleu": 1.983201906976715,
-  "chrf": 11.601848909512281,
+  "bleu": 3.56419508311144,
+  "chrf": 16.429728447891353,
   "beam_size": 5,
   "length_penalty": 0.7,
   "repetition_penalty": 1.3,
@@ -10,80 +10,80 @@
       "prediction": "hi!"
     },
     {
+      "reference": "the aileron is the control surface in the wing that is controlled by lateral movement right and left of the stick.",
+      "prediction": "so what you ' re going to do is go ahead and take a look at the same time."
+    },
+    {
+      "reference": "by moving the stick, you cause pressure to increase or decrease the angle of attack on that particular raising or lowering the wing.",
+      "prediction": "so you ' re going to go ahead and take a look at the same time."
+    },
+    {
+      "reference": "the elevator is the part that moves with the stick forward and back, and that adjusts the angle of attack of the airplane in the air",
+      "prediction": "today i ' m going to show you how to make a hot oil free credit card."
+    },
+    {
+      "reference": "therefore, it ' s either going uphill, downhill, or flat and that adjusts the air speed that we talked about earlier.",
+      "prediction": "i ' m going to talk to you about how to choose your business?"
+    },
+    {
       "reference": "the rudder is the vertical stabilizer.",
-      "prediction": "i ' m going to talk about how you."
+      "prediction": "i ' m just going to go ahead and put my thumb over here."
+    },
+    {
+      "reference": "that ' s moved by the feet and that ' s what actually steers the airplane right and left when you start and stop a turn.",
+      "prediction": "so you ' re going to take a nice deep breath and put it on the top of your glass."
+    },
+    {
+      "reference": "buenos dias, i ' m bobby larew, you didn ' t know i spoke spanish, did you?",
+      "prediction": "hi, this is sean hobson and we ' re going to talk about how to make a proper etiquette."
+    },
+    {
+      "reference": "i ' m an expert on diving, talking about a back 1 1 / 2 pike.",
+      "prediction": "hi, my name is jeff klein vodka connoisseur and bartender here at beak ' s old florida."
+    },
+    {
+      "reference": "what i ' m going to do with my arms is what ' s going to help me spin a little faster.",
+      "prediction": "so, you ' re going to take a look at the end of it."
+    },
+    {
+      "reference": "what you ' re going to do is you ' re going to take both your arms and they ' re going to come underneath your legs.",
+      "prediction": "we ' re going to go ahead and take a look at the same time."
+    },
+    {
+      "reference": "and i ' m actually going to lock my wrists when i pike.",
+      "prediction": "so you ' re going to take a look at the end of it, and then you ' ll want to make sure that there is no"
+    },
+    {
+      "reference": "when i lock underneath my legs, i ' m going to squeeze in.",
+      "prediction": "so you ' re going to take a look at the end of your feet and put it on."
+    },
+    {
+      "reference": "let me demonstrate you this on my back because it ' s a lot easier.",
+      "prediction": "it ' s very important that you don ' t have to worry about your job interview."
     },
     {
       "reference": "this is what it will look like.",
-      "prediction": "i ' m going to talk about how you."
+      "prediction": "so, you ' re going to want to make sure that your blade stays nice and tight."
     },
     {
       "reference": "that ' s a good pike position.",
-      "prediction": "i ' m going to show you."
+      "prediction": "i ' m going to go ahead and put that in."
     },
     {
       "reference": "i hope you ' re having fun.",
-      "prediction": "i ' m going to show you."
+      "prediction": "i ' m laura gibson, beauty expert."
     },
     {
       "reference": "i ' m having fun.",
-      "prediction": "there we go."
+      "prediction": "you don ' t want to go too much."
     },
     {
-      "reference": "let me show you what good pike position is.",
-      "prediction": "i ' m going to talk about how you."
+      "reference": "we ' re talking about what is good spinning, because if you ' re brave enough to try a back 1 1 / 2 in a pike",
+      "prediction": "so, we ' re going to go ahead and add some lip liner."
     },
     {
-      "reference": "okay, thank you.",
-      "prediction": "we ' re going to start off the back."
-    },
-    {
-      "reference": "you don ' t have to take big steps.",
-      "prediction": "i ' m going to start with the top."
-    },
-    {
-      "reference": "try not to pick up your feet, okay?",
-      "prediction": "i ' m going to show you."
-    },
-    {
-      "reference": "we ' re going to actually slide.",
-      "prediction": "i ' m going to start with the ball."
-    },
-    {
-      "reference": "a company with which i have no affiliation.",
-      "prediction": "i ' m going to show you."
-    },
-    {
-      "reference": "but that ' s not enough to get out of here.",
-      "prediction": "i ' m going to show you."
-    },
-    {
-      "reference": "we press this button, which opens the door.",
-      "prediction": "i ' m going to talk about how you."
-    },
-    {
-      "reference": "hi, we ' re learning to play ukulele today.",
-      "prediction": "i ' m going to show you."
-    },
-    {
-      "reference": "and checking out the second one.",
-      "prediction": "i ' m going to talk about how you."
-    },
-    {
-      "reference": "that ' s pretty good.",
-      "prediction": "okay?"
-    },
-    {
-      "reference": "that ' s pretty good.",
-      "prediction": "i ' m going to start with my left foot."
-    },
-    {
-      "reference": "that ' s pretty good.",
-      "prediction": "now we ' re going to start with our wagon."
-    },
-    {
-      "reference": "and that ' s how you tune a ukulele.",
-      "prediction": "now we ' re going to start with our lava."
+      "reference": "you can ' t get into the middle of the dive and just decide, \" you know what?",
+      "prediction": "i ' m laura gibson, beauty expert and today we are going to talk about how to apply a character."
     }
   ]
 }
