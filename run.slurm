@@ -9,16 +9,16 @@
 #SBATCH --error=logs/sl-train.err
 #SBATCH --time=96:00:00
 
-mkdir -p /home/imartinez374/.cache/huggingface
-export HF_HOME=/home/imartinez374/.cache/huggingface
-export HF_HUB_CACHE=/home/imartinez374/.cache/huggingface
-export HF_USERNAME=cafeolee
+mkdir -p /home/your_username/.cache/huggingface
+export HF_HOME=/home/your_username/.cache/huggingface
+export HF_HUB_CACHE=/home/your_username/.cache/huggingface
+export HF_USERNAME=your_username
 
 export PYTORCH_ALLOC_CONF=expandable_segments:True
 
-cd /home/imartinez374/sign-language-mt
-source /home/imartinez374/sign-language-mt/.venv/bin/activate
+cd /your/path
+source /your/path/.venv/bin/activate
 
-export PYTHONPATH=/home/imartinez374/sign-language:$PYTHONPATH
+export PYTHONPATH=/your/path:$PYTHONPATH
 
 python train.py
