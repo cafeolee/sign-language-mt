@@ -59,7 +59,7 @@ def predict(
     device: torch.device,
     beam_size: int = 5,
     length_penalty: float = 0.7,
-    repetition_penalty: float = 1.3,
+    repetition_penalty: float = 2.5,
 ) -> str:
     """
     Runs beam search decoding on a preprocessed keypoint sequence.
