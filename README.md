@@ -2,7 +2,6 @@
 
 **Álvaro García Mosqueda, Bersun Şipal, Inés Martínez Fernández**  
 
----
 
 ## Introduction
 
